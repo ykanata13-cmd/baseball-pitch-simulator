@@ -145,7 +145,7 @@ export default function ControlPanel({
         onCsvLoaded(pitches)
         setCsvMsg({ text: `${pitches.length}件の投球データを読み込みました`, ok: true })
       },
-      error: (err: Papa.ParseError) => {
+      error: (err: Error) => {
         console.error('[CSV] パースエラー:', err)
         setCsvMsg({ text: `読み込みエラー: ${err.message}`, ok: false })
       },
