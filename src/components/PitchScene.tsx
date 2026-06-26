@@ -379,23 +379,22 @@ function AnimBall({
   useEffect(() => {
     timeRef.current = 0
     doneRef.current = false
-    if (positions.length > 0 && meshRef.current) {
-      meshRef.current.position.copy(positions[0])
-      meshRef.current.rotation.set(0, 0, 0)  // 各投球でリセット
+    if (positions.length > 0) {
+      meshRef.current?.position.copy(positions[0])
+      meshRef.current?.rotation.set(0, 0, 0)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pitchKey])
 
   useEffect(() => {
-    if (isAnimating === false && positions.length > 0 && meshRef.current) {
-      meshRef.current.position.copy(positions[0])
+    if (isAnimating === false && positions.length > 0) {
+      meshRef.current?.position.copy(positions[0])
     }
   }, [positions, isAnimating])
 
   useFrame((_, delta) => {
-    if (!meshRef.current || positions.length < 2) return
-    // rotateOnWorldAxis: 世界座標系で固定軸を保ってスピン (rotateOnAxis は局所軸なので誤差が生じる)
-    meshRef.current.rotateOnWorldAxis(spinVec, (spinRate / 60) * 2 * Math.PI * delta)
+    if (positions.length < 2) return
+    meshRef.current?.rotateOnWorldAxis(spinVec, (spinRate / 60) * 2 * Math.PI * delta)
 
     const active = isAnimating !== undefined
       ? isAnimating && !doneRef.current
@@ -407,7 +406,7 @@ function AnimBall({
     const idxF = t * (positions.length - 1)
     const i0   = Math.floor(idxF)
     const i1   = Math.min(i0 + 1, positions.length - 1)
-    meshRef.current.position.copy(
+    meshRef.current?.position.copy(
       positions[i0].clone().lerp(positions[i1], idxF - i0)
     )
     if (t >= 1) {
